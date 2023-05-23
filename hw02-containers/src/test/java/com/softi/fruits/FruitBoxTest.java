@@ -94,5 +94,18 @@ class FruitBoxTest {
         assertFalse(orangeBox.compare(appleBox));
 
     }
+    
+    @Test
+    public void pour() {
+        FruitBox<Fruit> fruitBox = new FruitBox<>();
+        fruitBox.add(new Apple());
+        fruitBox.add(new Apple());
+        fruitBox.add(new Orange());
+        
+        fruitBox.pourInto(fruitBox);
+        fruitBox.pourInto(null);
+        
+        assertEquals(Apple.AVERAGE_WEIGHT * 2 + Orange.AVERAGE_WEIGHT, fruitBox.weight());
+    }
 
 }
