@@ -3,90 +3,84 @@ package com.softi.cash_machine;
 import com.softi.cash_machine.exceptions.ImpossibleToWithdrawSpecifiedAmountException;
 import com.softi.cash_machine.exceptions.IncorrectAmountException;
 import com.softi.cash_machine.exceptions.NotEnoughMoneyException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CashMachineImpl implements CashMachine {
 
-    private HashMap<BillType, Integer> billStock;
+    private Map<BillType, Integer> billStockMap;
 
     public CashMachineImpl() {
-        this.billStock = new HashMap<>();
+        billStockMap = new HashMap<>();
         for (BillType bill : BillType.values()) {
-            this.billStock.put(bill, 0);
+            billStockMap.put(bill, 0);
         }
     }
 
     @Override
     public void putMoney(BillBundle billBundle) {
         for (BillType billType : billBundle.getBillTypes()) {
-            putMoney(billType, billBundle.getBillAmount(billType));
+            Integer updateQuantity = billStockMap.get(billType) + billBundle.getBillAmount(billType);
+            billStockMap.put(billType, updateQuantity);
         }
     }
 
     @Override
-    public void putMoney(BillType billType, Integer amount) {
-        Integer updateQuantity = billStock.get(billType) + amount;
-        this.billStock.put(billType, updateQuantity);
-    }
-
-    @Override
-    public BillBundle getMoney(BigDecimal amount) {
+    public BillBundle getMoney(Integer amount) {
         BillBundle result = new BillBundle();
         
-        BigDecimal currentBalance = getBalance();
-        BigDecimal oneHundred = BigDecimal.valueOf(100);
-        BigDecimal hundreds = amount.divide(oneHundred, RoundingMode.DOWN);
-        
-        if (amount.subtract(hundreds.multiply(oneHundred)).compareTo(BigDecimal.ZERO) > 0) {
+        Integer currentBalance = getBalance();
+        Integer oneHundred = 100;
+        Integer hundreds = amount / oneHundred;
+
+        if (amount - hundreds * oneHundred > 0) {
             throw new IncorrectAmountException();
         }
-        if (currentBalance.compareTo(amount) < 0) {
+        if (currentBalance < amount) {
             throw new NotEnoughMoneyException();
         }
 
         Comparator<BillType> billTypeValueComparator = Comparator.comparing(BillType::getValue);
 
-        List<BillType> billTypes = Arrays.stream(BillType.values()).sorted(billTypeValueComparator.reversed())
+        List<BillType> billTypes = Arrays.stream(BillType.values())
+                .sorted(billTypeValueComparator.reversed())
                 .collect(Collectors.toList());
 
         for (BillType billType : billTypes) {
-            BigDecimal billValue = BigDecimal.valueOf(billType.getValue());
+            Integer billValue = billType.getValue();
 
-            if (amount.compareTo(billValue) <= 0) {
+            if (amount <= billValue) {
                 continue;
             }
-            
-            BigDecimal numberOfBills = amount.divide(billValue, RoundingMode.DOWN);
-            amount = amount.subtract(billValue.multiply(numberOfBills));
-            result.addBills(billType, numberOfBills.intValue());
+
+            Integer numberOfBills = amount / billValue;
+            amount -= billValue * numberOfBills;
+            result.addBills(billType, numberOfBills);
         }
 
-        if (amount.compareTo(BigDecimal.ZERO) > 0) {
+        if (amount > 0) {
             throw new ImpossibleToWithdrawSpecifiedAmountException();
         }
 
         for (BillType billType : result.getBillTypes()) {
-            int updateCount = this.billStock.get(billType) - result.getBillAmount(billType);
-            this.billStock.put(billType, updateCount);
+            int updateCount = billStockMap.get(billType) - result.getBillAmount(billType);
+            billStockMap.put(billType, updateCount);
         }
 
         return result;
     }
     
     @Override
-    public BigDecimal getBalance() {
-        BigDecimal balance = BigDecimal.ZERO;
-        for (BillType billType : this.billStock.keySet()) {
-            balance = balance.add(
-                    BigDecimal.valueOf(billType.getValue()).multiply(BigDecimal.valueOf(this.billStock.get(billType))));
+    public Integer getBalance() {
+        int balance = 0;
+        for (BillType billType : this.billStockMap.keySet()) {
+            balance += billType.getValue() * billStockMap.get(billType);
         }
         return balance;
     }

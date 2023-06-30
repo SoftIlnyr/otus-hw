@@ -3,14 +3,14 @@ package com.softi.cash_machine;
 import com.softi.cash_machine.exceptions.ImpossibleToWithdrawSpecifiedAmountException;
 import com.softi.cash_machine.exceptions.IncorrectAmountException;
 import com.softi.cash_machine.exceptions.NotEnoughMoneyException;
-import java.math.BigDecimal;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CashMachineTest {
 
@@ -21,7 +21,7 @@ class CashMachineTest {
 
         cashMachine.putMoney(billBundle);
 
-        assertEquals(BigDecimal.valueOf(expectedResult), cashMachine.getBalance());
+        assertEquals(expectedResult, cashMachine.getBalance());
     }
     
     static Stream<Arguments> putMoney() {
@@ -69,14 +69,14 @@ class CashMachineTest {
         billBundle.addBills(BillType.RUB_1000, 10);
         cashMachine.putMoney(billBundle);
 
-        BigDecimal balanceBeforeWithdraw = cashMachine.getBalance();
+        Integer balanceBeforeWithdraw = cashMachine.getBalance();
 
-        BigDecimal amount = BigDecimal.valueOf(1000);
+        int amount = 1000;
         cashMachine.getMoney(amount);
 
-        BigDecimal balanceAfterWithdraw = cashMachine.getBalance();
+        Integer balanceAfterWithdraw = cashMachine.getBalance();
         
-        assertEquals(amount, balanceBeforeWithdraw.subtract(balanceAfterWithdraw));
+        assertEquals(amount, balanceBeforeWithdraw - balanceAfterWithdraw);
     }
 
     @Test
@@ -88,7 +88,7 @@ class CashMachineTest {
         cashMachine.putMoney(billBundle);
 
         assertThrows(ImpossibleToWithdrawSpecifiedAmountException.class,
-                () -> cashMachine.getMoney(BigDecimal.valueOf(600)));
+                () -> cashMachine.getMoney(600));
 
         System.out.println(cashMachine.getBalance());
     }
@@ -102,7 +102,7 @@ class CashMachineTest {
         cashMachine.putMoney(billBundle);
 
         assertThrows(IncorrectAmountException.class,
-                () -> cashMachine.getMoney(BigDecimal.valueOf(101)));
+                () -> cashMachine.getMoney(101));
     }
 
     @Test
@@ -114,6 +114,6 @@ class CashMachineTest {
         cashMachine.putMoney(billBundle);
 
         assertThrows(NotEnoughMoneyException.class,
-                () -> cashMachine.getMoney(BigDecimal.valueOf(600)));
+                () -> cashMachine.getMoney(600));
     }
 }
