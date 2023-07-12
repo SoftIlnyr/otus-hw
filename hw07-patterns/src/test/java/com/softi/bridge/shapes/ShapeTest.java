@@ -3,9 +3,11 @@ package com.softi.bridge.shapes;
 import com.softi.bridge.colors.CustomColor;
 import com.softi.bridge.colors.Red;
 import com.softi.bridge.colors.Yellow;
+import com.softi.bridge.shapes.CustomShape;
+import com.softi.bridge.shapes.Rectanble;
+import com.softi.bridge.shapes.Shape;
+import com.softi.bridge.shapes.Triangle;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ShapeTest {
     

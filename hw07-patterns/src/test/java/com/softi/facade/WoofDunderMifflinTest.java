@@ -1,6 +1,11 @@
 package com.softi.facade;
 
+import com.softi.facade.Contact;
 import com.softi.facade.Contact.ContactBuilder;
+import com.softi.facade.EmailSender;
+import com.softi.facade.FaxSender;
+import com.softi.facade.SMSSender;
+import com.softi.facade.WoofDunderMifflin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

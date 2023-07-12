@@ -1,8 +1,9 @@
 package com.softi.composite;
 
+import com.softi.composite.File;
+import com.softi.composite.Folder;
+import com.softi.composite.Node;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class NodeTest {
     

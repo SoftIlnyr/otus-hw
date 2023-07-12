@@ -1,9 +1,6 @@
 package com.softi.bridge.shapes;
 
 import com.softi.bridge.colors.Color;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public abstract class Shape {
 

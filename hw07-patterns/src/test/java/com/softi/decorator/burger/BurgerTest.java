@@ -1,5 +1,11 @@
 package com.softi.decorator.burger;
 
+import com.softi.decorator.burger.Burger;
+import com.softi.decorator.burger.ClassicBurger;
+import com.softi.decorator.burger.ExtraCheeseDecorator;
+import com.softi.decorator.burger.ExtraCucumberDecorator;
+import com.softi.decorator.burger.ExtraCutletDecorator;
+import com.softi.decorator.burger.Wopper;
 import org.junit.jupiter.api.Test;
 
 class BurgerTest {

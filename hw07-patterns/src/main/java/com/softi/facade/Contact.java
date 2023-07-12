@@ -1,7 +1,5 @@
 package com.softi.facade;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
