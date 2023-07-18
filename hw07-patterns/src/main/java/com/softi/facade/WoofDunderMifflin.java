@@ -11,6 +11,9 @@ public class WoofDunderMifflin implements WoofServiceFacade {
 
     @Override
     public void sendWoof(Contact contact, String message) {
+        if (contact == null) {
+            return;
+        }
         emailSender.sendMessage(contact.getEmail(), message);
         smsSender.sendMessage(contact.getPhoneNumber(), message);
         faxSender.sendMessage(contact.getFax(), message);
