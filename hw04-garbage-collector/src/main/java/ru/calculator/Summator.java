@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Summator {
-    private Integer sum = 0;
-    private Integer prevValue = 0;
-    private Integer prevPrevValue = 0;
-    private Integer sumLastThreeValues = 0;
-    private Integer someValue = 0;
+    private int sum = 0;
+    private int prevValue = 0;
+    private int prevPrevValue = 0;
+    private int sumLastThreeValues = 0;
+    private int someValue = 0;
     private final List<Data> listValues = new ArrayList<>();
 
     //!!! сигнатуру метода менять нельзя
@@ -24,9 +24,10 @@ public class Summator {
         prevPrevValue = prevValue;
         prevValue = data.getValue();
 
+        int valueToAdd = sumLastThreeValues * sumLastThreeValues / (data.getValue() + 1) - sum;
         for (var idx = 0; idx < 3; idx++) {
-            someValue += (sumLastThreeValues * sumLastThreeValues / (data.getValue() + 1) - sum);
-            someValue = Math.abs(someValue) + listValues.size();
+            this.someValue += valueToAdd;
+            this.someValue = Math.abs(this.someValue) + listValues.size();
         }
     }
 
