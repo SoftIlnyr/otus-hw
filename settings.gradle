@@ -4,4 +4,5 @@ include 'hw02-containers'
 include 'hw03-reflection'
 include 'hw07-patterns'
 include 'hw04-garbage-collector'
+include 'hw06-cash-machine'
 
