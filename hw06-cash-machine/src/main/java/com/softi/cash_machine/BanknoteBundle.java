@@ -7,23 +7,23 @@ import lombok.Getter;
 public class BanknoteBundle {
 
     @Getter
-    Map<BanknoteType, Integer> banknotes;
+    Map<BanknoteType, Integer> banknoteMap;
 
     public BanknoteBundle() {
-        banknotes = new HashMap<>();
+        banknoteMap = new HashMap<>();
         for (BanknoteType banknoteType : BanknoteType.values()) {
-            banknotes.put(banknoteType, 0);
+            banknoteMap.put(banknoteType, 0);
         }
     }
 
     public BanknoteBundle(BanknoteBundle banknoteBundle) {
-        this.banknotes = new HashMap<>(banknoteBundle.getBanknotes());
+        this.banknoteMap = new HashMap<>(banknoteBundle.getBanknoteMap());
     }
     
     public int getSum() {
         int result = 0;
-        for (BanknoteType banknoteType : banknotes.keySet()) {
-            result += banknoteType.getValue() * banknotes.get(banknoteType);
+        for (BanknoteType banknoteType : banknoteMap.keySet()) {
+            result += banknoteType.getValue() * banknoteMap.get(banknoteType);
         }
         return result;
     }
@@ -32,7 +32,7 @@ public class BanknoteBundle {
         if (amount < 0) {
             throw new IllegalArgumentException("Значение должно быть больше нуля");
         }
-        banknotes.put(banknoteType, banknotes.get(banknoteType) + amount);
+        banknoteMap.put(banknoteType, banknoteMap.get(banknoteType) + amount);
     }
     
 }

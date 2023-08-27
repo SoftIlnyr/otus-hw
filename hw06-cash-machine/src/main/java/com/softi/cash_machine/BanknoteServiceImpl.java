@@ -8,14 +8,14 @@ import lombok.Setter;
 public class BanknoteServiceImpl implements BanknoteService {
 
     @Setter
-    private Map<BanknoteType, Integer> banknoteCells;
+    private Map<BanknoteType, Integer> banknoteCellMap;
     @Setter
     private BanknoteSearchService banknoteSearchService;
 
     public BanknoteServiceImpl() {
-        banknoteCells = new TreeMap<>(Comparator.comparing(BanknoteType::getValue).reversed());
+        banknoteCellMap = new TreeMap<>(Comparator.comparing(BanknoteType::getValue).reversed());
         for (BanknoteType banknoteType : BanknoteType.values()) {
-            banknoteCells.put(banknoteType, 0);
+            banknoteCellMap.put(banknoteType, 0);
         }
     }
 
@@ -25,7 +25,7 @@ public class BanknoteServiceImpl implements BanknoteService {
 
         for (BanknoteType banknoteType : banknotes.keySet()) {
             sum += banknoteType.getValue() * banknotes.get(banknoteType);
-            banknoteCells.put(banknoteType, banknoteCells.get(banknoteType) + banknotes.get(banknoteType));
+            banknoteCellMap.put(banknoteType, banknoteCellMap.get(banknoteType) + banknotes.get(banknoteType));
         }
 
         return sum;
@@ -34,12 +34,12 @@ public class BanknoteServiceImpl implements BanknoteService {
     @Override
     public Map<BanknoteType, Integer> getBanknotes(int sum) {
 
-        Map<BanknoteType, Integer> availableVariant = banknoteSearchService.searchBanknoteBundle(banknoteCells, sum);
+        Map<BanknoteType, Integer> availableVariantMap = banknoteSearchService.searchBanknoteBundle(banknoteCellMap, sum);
 
-        if (availableVariant.isEmpty()) {
+        if (availableVariantMap.isEmpty()) {
             throw new IllegalStateException("Невозможно выдать данную сумму");
         }
 
-        return availableVariant;
+        return availableVariantMap;
     }
 }

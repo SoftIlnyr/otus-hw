@@ -19,7 +19,7 @@ class BanknoteServiceImplTest {
     @MethodSource("getBanknotes")
     void getBanknotes(int sum, Map<BanknoteType, Integer> banknoteCells, Map<BanknoteType, Integer> expectedResult) {
         BanknoteServiceImpl banknoteService = new BanknoteServiceImpl();
-        banknoteService.setBanknoteCells(banknoteCells);
+        banknoteService.setBanknoteCellMap(banknoteCells);
         banknoteService.setBanknoteSearchService(new BanknoteSearchServiceBfsImpl());
         
         Map<BanknoteType, Integer> result = banknoteService.getBanknotes(sum);
@@ -97,7 +97,7 @@ class BanknoteServiceImplTest {
     @Test
     void getBanknotes_notEnoughMoneyInCashMachine() {
         BanknoteServiceImpl banknoteService = new BanknoteServiceImpl();
-        banknoteService.setBanknoteCells(new BanknoteBundle().getBanknotes());
+        banknoteService.setBanknoteCellMap(new BanknoteBundle().getBanknoteMap());
         banknoteService.setBanknoteSearchService(new BanknoteSearchServiceBfsImpl());
 
         int sum = 100;
@@ -110,7 +110,7 @@ class BanknoteServiceImplTest {
         BanknoteServiceImpl banknoteService = new BanknoteServiceImpl();
         BanknoteBundle banknoteBundle = new BanknoteBundle();
         banknoteBundle.addBanknotes(BanknoteType.RUB_500, 1);
-        banknoteService.setBanknoteCells(banknoteBundle.getBanknotes());
+        banknoteService.setBanknoteCellMap(banknoteBundle.getBanknoteMap());
         banknoteService.setBanknoteSearchService(new BanknoteSearchServiceBfsImpl());
         
 

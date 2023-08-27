@@ -2,7 +2,6 @@ package com.softi.cash_machine;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class BanknoteSearchServiceBfsImpl implements BanknoteSearchService {
             for (BanknoteType banknoteType : Arrays.stream(BanknoteType.values())
                     .filter(banknoteType -> banknoteType.getValue() <= edge.getBanknoteType().getValue())
                     .collect(Collectors.toList())) {
-                if (banknoteCells.get(banknoteType) < currentVariant.getBanknotes().get(banknoteType) + 1) {
+                if (banknoteCells.get(banknoteType) < currentVariant.getBanknoteMap().get(banknoteType) + 1) {
                     continue;
                 }
                 searchVariants.add(new Edge(searchVariant, banknoteType));
@@ -56,7 +55,7 @@ public class BanknoteSearchServiceBfsImpl implements BanknoteSearchService {
             throw new IllegalStateException("Невозможно выдать указанную сумму");
         }
 
-        return result.getBanknotes();
+        return result.getBanknoteMap();
     }
 
     @Getter
